@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Neo Regex</string>
+    <string name="save_all">Salvar tudo</string>
 </resources>
