@@ -5,16 +5,26 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
-
 android {
     signingConfigs {
         release {
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
+
+            def fileKeystoreProperties = rootProject.file("keystore.properties")
+
+            def keystoreProperties = new Properties()
+
+            if (fileKeystoreProperties.exists()) {
+                keystoreProperties.load(new FileInputStream(fileKeystoreProperties))
+
+                def storeFilePath = keystoreProperties['storeFile']
+
+                if (storeFilePath != null) {
+                    storeFile file(storeFilePath)
+                    storePassword keystoreProperties['storePassword']
+                    keyAlias keystoreProperties['keyAlias']
+                    keyPassword keystoreProperties['keyPassword']
+                }
+            }
         }
     }
     compileSdk 31
