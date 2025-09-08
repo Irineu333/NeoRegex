@@ -46,6 +46,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.neoutils.neoregex.core.common.platform.isMacOS
+import com.neoutils.neoregex.core.common.platform.platform
 import com.neoutils.neoregex.core.common.util.ColorTheme
 import com.neoutils.neoregex.core.common.util.Command
 import com.neoutils.neoregex.core.common.util.rememberColorTheme
@@ -92,7 +94,6 @@ fun ApplicationScope.DesktopApp() {
             header = { HeaderImpl() },
             windowState = rememberWindowState(windowState)
         ) {
-
             windowStateDataSource.observe(window)
 
             App(
@@ -144,14 +145,17 @@ private fun FrameWindowScope.HeaderImpl(
                 },
             ),
             navigationIcon = {
-
                 val startPadding = padding.calculateStartPadding(direction)
 
-                Controller(
-                    modifier = Modifier.padding(
-                        start = startPadding + dimensions.nano.m
-                    ).height(dimensions.large.x)
-                )
+                if (platform.isMacOS) {
+                    ControllerSystemBar()
+                } else {
+                    Controller(
+                        modifier = Modifier.padding(
+                            start = startPadding + dimensions.nano.m
+                        ).height(dimensions.large.x)
+                    )
+                }
             },
             title = {
                 AnimatedContent(
@@ -241,4 +245,3 @@ private fun FrameWindowScope.HeaderImpl(
         )
     }
 }
-
