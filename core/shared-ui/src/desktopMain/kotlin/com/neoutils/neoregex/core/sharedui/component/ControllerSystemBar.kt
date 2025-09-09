@@ -18,13 +18,15 @@
 
 package com.neoutils.neoregex.core.sharedui.component
 
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neoutils.neoregex.core.datasource.PreferencesDataSource
 import com.neoutils.neoregex.core.datasource.model.Preferences
 import com.neoutils.neoregex.core.manager.model.Navigation
@@ -58,6 +60,7 @@ fun FrameWindowScope.ControllerSystemBar() = MenuBar {
     val preferencesDataSource = koinInject<PreferencesDataSource>()
 
     var showSavePatternDialog by remember { mutableStateOf(false) }
+    val canSave by salvageManager.canSave.collectAsStateWithLifecycle(initialValue = false)
     val screen by navigation.screen.collectAsState()
     val preferences by preferencesDataSource.flow.collectAsState()
 
@@ -89,6 +92,7 @@ fun FrameWindowScope.ControllerSystemBar() = MenuBar {
 
         Item(
             text = stringResource(Res.string.menu_save_btn),
+            enabled = canSave,
             onClick = {
                 showSavePatternDialog = true
             }
@@ -208,7 +212,7 @@ fun FrameWindowScope.ControllerSystemBar() = MenuBar {
                 }
             },
             confirmLabel = {
-                Text(text = stringResource(Res.string.salvage_save_dialog_save_btn))
+                Text(stringResource(Res.string.salvage_save_dialog_save_btn))
             },
             title = {
                 Text(

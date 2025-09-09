@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface SalvageManager {
 
     val flow: StateFlow<Opened?>
-    val canSave: Flow<Boolean>
+    val canSave: StateFlow<Boolean>
 
     suspend fun open(id: Long)
     suspend fun close()

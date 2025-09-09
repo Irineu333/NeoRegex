@@ -77,7 +77,7 @@
     <string name="screen_about">About</string>
     <string name="screen_libraries">Libraries</string>
     <string name="screen_validator">Validator</string>
-    <string name="screen_saved">Saved</string>
+    <string name="screen_saved">Patterns</string>
 
     <string name="test_case_match_any">Match Any</string>
     <string name="test_case_match_full">Match Full</string>

@@ -73,7 +73,11 @@ class SalvageManagerImpl(
         patternStateRepository.flow
     ) { opened, pattern ->
         opened == null && pattern.isValid
-    }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = false,
+    )
 
     override suspend fun open(id: Long) {
         opened.value = id
@@ -142,6 +146,9 @@ class SalvageManagerImpl(
     }
 
     override suspend fun save(name: String) {
+
+        if (!canSave.value) return
+
         val pattern = patternsRepository.save(
             Pattern(
                 title = name,
