@@ -69,7 +69,7 @@ buildkonfig {
                 Config.Stage.ALPHA -> "alpha"
                 Config.Stage.BETA -> "beta"
                 Config.Stage.RELEASE_CANDIDATE -> "release-candidate"
-                Config.Stage.RELEASE -> "release"
+                Config.Stage.RELEASE -> "production"
             },
         )
     }

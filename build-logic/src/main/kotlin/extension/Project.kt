@@ -26,9 +26,9 @@ import org.gradle.kotlin.dsl.the
 val config = Config(
     version = Config.Version(
         major = 3,
-        minor = 2,
+        minor = 3,
         patch = 0,
-        stage = Config.Stage.RELEASE
+        stage = Config.Stage.DEVELOP
     ),
     android = Config.Android(
         compileSdk = 34,
