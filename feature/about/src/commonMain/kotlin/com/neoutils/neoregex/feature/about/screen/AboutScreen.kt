@@ -121,14 +121,18 @@ class AboutScreen : Screen {
             Link(
                 text = stringResource(Res.string.about_source_code_btn),
                 onClick = {
-                    uriHandler.openUri(uri = "https://github.com/NeoUtils/NeoRegex")
+                    uriHandler.openUri(
+                        uri = "https://github.com/NeoUtils/NeoRegex"
+                    )
                 }
             )
 
             Link(
                 text = stringResource(Res.string.about_license_btn),
                 onClick = {
-                    uriHandler.openUri(uri = "https://github.com/NeoUtils/NeoRegex#GPL-3.0-1-ov-file")
+                    uriHandler.openUri(
+                        uri = "https://github.com/NeoUtils/NeoRegex#GPL-3.0-1-ov-file"
+                    )
                 }
             )
         }
