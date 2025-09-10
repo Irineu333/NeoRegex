@@ -1,7 +1,7 @@
 [versions]
 agp = "8.6.1" # requires Gradle 8.6+
 kotlin = "2.1.21" # recommends Gradle 8.6+ and JDK 17+
-cmp = "1.8.0" # requires Kotlin 2.1.0+ and compileSdk 35+
+cmp = "1.8.2" # requires Kotlin 2.1.0+ and compileSdk 35+
 
 android-compileSdk = "35" # recommends AGP 8.6.0+
 android-minSdk = "24"
