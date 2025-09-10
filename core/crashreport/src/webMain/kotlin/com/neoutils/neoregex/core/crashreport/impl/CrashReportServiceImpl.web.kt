@@ -34,8 +34,10 @@ private external val BugsnagPerformance: dynamic
 internal class CrashReportServiceImpl : CrashReportService {
 
     override fun setup() {
+        val apiKey = BuildKonfig.BUGSNAG_API_KEY ?: return
+
         val config = json(
-            "apiKey" to BuildKonfig.BUGSNAG_API_KEY,
+            "apiKey" to apiKey,
             "appVersion" to NeoConfig.version,
             "releaseStage" to BuildKonfig.STAGE
         )
