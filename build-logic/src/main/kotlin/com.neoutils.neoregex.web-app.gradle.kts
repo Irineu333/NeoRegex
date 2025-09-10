@@ -29,9 +29,9 @@ kotlin {
         vendor.set(JvmVendorSpec.JETBRAINS)
     }
 
-    js(name = "web", IR) {
+    js(name = "web", compiler = IR) {
 
-        moduleName = "app"
+        outputModuleName = "app"
 
         browser {
             commonWebpackConfig {

@@ -16,14 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
 @file:Suppress("UnstableApiUsage")
 
 import extension.catalog
 import extension.config
-import extension.module
 import extension.name
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -48,9 +45,9 @@ kotlin {
         }
     }
 
-    jvm("desktop")
+    jvm(name = "desktop")
 
-    js("web", IR) {
+    js(name = "web", compiler = IR) {
         browser()
         binaries.library()
     }
@@ -59,7 +56,7 @@ kotlin {
         commonMain.dependencies {
 
             // lifecycle
-            implementation(catalog.androidx.multplatform.lifecycle.runtime.compose)
+            implementation(catalog.jetbrains.androidx.lifecycle.runtime.compose)
 
             // compose
             implementation(compose.runtime)
@@ -68,6 +65,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
 
             // koin
             implementation(catalog.koin.core)
@@ -77,6 +75,12 @@ kotlin {
             implementation(catalog.kotlinx.datetime)
         }
 
+        androidMain.dependencies {
+
+            // compose
+            implementation(compose.preview)
+        }
+
         val desktopMain by getting {
             dependencies {
                 // compose
@@ -84,4 +88,8 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    debugImplementation(compose.uiTooling)
 }

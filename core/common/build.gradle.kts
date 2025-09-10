@@ -32,7 +32,7 @@ kotlin {
         commonMain.dependencies {
 
             // NeoUtils
-            implementation(libs.highlight.compose)
+            implementation(libs.neoutils.highlight.compose)
         }
 
         webTest.dependencies {
