@@ -19,9 +19,8 @@
 package com.neoutils.neoregex
 
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.CanvasBasedWindow
+import androidx.compose.ui.window.ComposeViewport
 import com.neoutils.neoregex.core.common.di.commonModule
-import com.neoutils.neoregex.core.common.util.SizeManager
 import com.neoutils.neoregex.core.crashreport.CrashReportHelper
 import com.neoutils.neoregex.core.crashreport.di.crashReportModule
 import com.neoutils.neoregex.core.database.di.databaseModule
@@ -30,8 +29,6 @@ import com.neoutils.neoregex.core.manager.di.managerModule
 import com.neoutils.neoregex.core.repository.di.repositoryModule
 import com.neoutils.neoregex.feature.matcher.di.matcherModule
 import com.neoutils.neoregex.feature.validator.di.validatorModule
-import kotlinx.coroutines.flow.first
-import org.jetbrains.skiko.wasm.onWasmReady
 import org.koin.core.context.startKoin
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -52,18 +49,7 @@ fun main() {
 
     CrashReportHelper.service.setup()
 
-    val sizeManager = SizeManager().apply { resize() }
-
-    onWasmReady {
-        CanvasBasedWindow(
-            canvasElementId = "viewport-container",
-            applyDefaultStyles = false,
-            requestResize = {
-                sizeManager.changes.first()
-            }
-        ) {
-            WebApp()
-        }
+    ComposeViewport {
+        WebApp()
     }
 }
-
