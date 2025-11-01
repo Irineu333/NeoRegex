@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:OptIn(ExperimentalTime::class, FlowPreview::class)
+
 package com.neoutils.neoregex.feature.matcher
 
 import cafe.adriel.voyager.core.model.ScreenModel
@@ -32,9 +34,9 @@ import com.neoutils.neoregex.feature.matcher.action.MatcherAction
 import com.neoutils.neoregex.feature.matcher.state.MatcherUiState
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
-@OptIn(FlowPreview::class)
 class MatcherViewModel(
     private val patternStateRepository: PatternStateRepository,
     private val textSampleRepository: TextSampleRepository

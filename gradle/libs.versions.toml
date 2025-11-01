@@ -1,7 +1,7 @@
 [versions]
 agp = "8.6.1" # requires Gradle 8.6+
-kotlin = "2.1.21" # recommends Gradle 8.6+ and JDK 17+
-cmp = "1.9.0-rc01" # requires Kotlin 2.1.0+ and compileSdk 35+
+kotlin = "2.2.0" # recommends Gradle 8.6+ and JDK 17+
+cmp = "1.9.2" # requires Kotlin 2.1.0+ and compileSdk 35+
 
 android-compileSdk = "35" # recommends AGP 8.6.0+
 android-minSdk = "24"
@@ -13,7 +13,7 @@ bugsnag-android-performance = "1.12.0"
 
 dbus-java-core = "5.1.0"
 
-kotlinx-datetime = "0.6.1"
+kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.7.3"
 kotlinx-coroutines = "1.9.0"
 androidx-compose = "1.7.4"

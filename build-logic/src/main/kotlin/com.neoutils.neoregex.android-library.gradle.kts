@@ -20,7 +20,7 @@
 
 import extension.catalog
 import extension.config
-import gradle.kotlin.dsl.accessors._99f383e9504ff70e774f7d99a658657b.kotlin
+import gradle.kotlin.dsl.accessors._29a7cb0b0c9f6580251e1795ae8fc406.kotlin
 
 plugins {
     id("com.android.library")
