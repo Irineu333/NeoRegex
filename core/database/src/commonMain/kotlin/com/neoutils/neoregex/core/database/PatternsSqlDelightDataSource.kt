@@ -42,7 +42,7 @@ internal class PatternsSqlDelightDataSource(
             database.patternEntityQueries.insertPattern(
                 title = pattern.title,
                 pattern = pattern.pattern,
-                sample = pattern.sample,
+                sample = pattern.sample.toString(),
                 createAt = createAt
             )
 
@@ -138,7 +138,7 @@ internal class PatternsSqlDelightDataSource(
                     id = id,
                     title = newPattern.title,
                     pattern = newPattern.pattern,
-                    sample = newPattern.sample
+                    sample = newPattern.sample.toString()
                 )
             }
 

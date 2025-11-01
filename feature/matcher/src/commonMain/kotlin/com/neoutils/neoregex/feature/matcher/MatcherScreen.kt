@@ -25,15 +25,11 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.onPreviewKeyEvent
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
@@ -41,7 +37,6 @@ import com.neoutils.neoregex.core.common.model.Field
 import com.neoutils.neoregex.core.common.util.Command
 import com.neoutils.neoregex.core.designsystem.component.ErrorTooltip
 import com.neoutils.neoregex.core.designsystem.theme.NeoTheme.dimensions
-import com.neoutils.neoregex.core.designsystem.theme.NeoTheme.fontSizes
 import com.neoutils.neoregex.core.sharedui.component.Footer
 import com.neoutils.neoregex.core.sharedui.component.Performance
 import com.neoutils.neoregex.core.sharedui.component.TextEditor
@@ -69,12 +64,7 @@ class MatcherScreen : Screen {
         BoxWithConstraints(Modifier.weight(weight = 1f)) {
 
             TextEditor(
-                value = uiState.inputs.text,
-                onValueChange = {
-                    viewModel.onAction(
-                        MatcherAction.UpdateText(it)
-                    )
-                },
+                state = viewModel.sampleField,
                 onFocusChange = {
                     if (it.isFocused) {
                         viewModel.onAction(
@@ -86,25 +76,6 @@ class MatcherScreen : Screen {
                     when (val result = uiState.result) {
                         is MatcherUiState.Result.Failure -> listOf()
                         is MatcherUiState.Result.Success -> result.matches
-                    }
-                },
-                modifier = Modifier.onPreviewKeyEvent {
-                    when (Command.from(it)) {
-                        Command.UNDO -> {
-                            viewModel.onAction(
-                                MatcherAction.History.Undo(Field.TEXT)
-                            )
-                            true
-                        }
-
-                        Command.REDO -> {
-                            viewModel.onAction(
-                                MatcherAction.History.Redo(Field.TEXT)
-                            )
-                            true
-                        }
-
-                        else -> false
                     }
                 },
             )

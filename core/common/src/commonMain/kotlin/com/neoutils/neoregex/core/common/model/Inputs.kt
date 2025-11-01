@@ -20,6 +20,5 @@ package com.neoutils.neoregex.core.common.model
 
 data class Inputs(
     val field: Field? = null,
-    val text: TextState = TextState(),
     val regex: TextState = TextState(),
 )

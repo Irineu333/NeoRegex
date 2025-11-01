@@ -34,7 +34,7 @@ data class Opened(
 fun Opened(
     id: Long,
     patternState: PatternState,
-    sampleState: SampleState,
+    sample: CharSequence,
     testCases: List<TestCase>,
     patterns: List<Pattern>
 ): Opened? {
@@ -43,7 +43,7 @@ fun Opened(
         it.id == id
     }?.let { savedPattern ->
         val updated =
-            sampleState.text.value == savedPattern.sample &&
+            sample == savedPattern.sample &&
                     patternState.text.value == savedPattern.pattern &&
                     testCases deepEquals savedPattern.testCases
         Opened(

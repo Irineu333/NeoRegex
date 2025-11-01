@@ -23,13 +23,14 @@ import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.*
@@ -46,17 +47,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 import com.neoutils.neoregex.core.common.extension.getBoundingBoxes
-import com.neoutils.neoregex.core.common.extension.toText
-import com.neoutils.neoregex.core.common.extension.toTextFieldValue
 import com.neoutils.neoregex.core.common.model.DrawMatch
 import com.neoutils.neoregex.core.common.model.Match
-import com.neoutils.neoregex.core.common.model.TextState
 import com.neoutils.neoregex.core.designsystem.theme.NeoTheme.dimensions
+import com.neoutils.neoregex.core.sharedui.extension.verticalOffset
 
 @Composable
 actual fun TextEditor(
-    value: TextState,
-    onValueChange: (TextState) -> Unit,
+    state: TextFieldState,
     modifier: Modifier,
     onFocusChange: (FocusState) -> Unit,
     matches: List<Match>,
@@ -92,7 +90,9 @@ actual fun TextEditor(
                                 .getBoundingBoxes(
                                     match.range.first,
                                     match.range.last
-                                )
+                                ).map {
+                                    it.translate(-scrollState.verticalOffset)
+                                }
                                 .any {
                                     it.contains(interaction.press.pressPosition)
                                 }
@@ -133,14 +133,8 @@ actual fun TextEditor(
                 .fillMaxHeight()
         )
 
-        val textFileValue = remember(value) { value.toTextFieldValue() }
-
-        // TODO(improve): it's not performant for large text
         BasicTextField(
-            value = textFileValue,
-            onValueChange = {
-                onValueChange(it.toText())
-            },
+            state = state,
             textStyle = mergedTextStyle.copy(
                 lineHeightStyle = LineHeightStyle(
                     alignment = LineHeightStyle.Alignment.Proportional,
@@ -150,11 +144,11 @@ actual fun TextEditor(
             ),
             interactionSource = interactionSource,
             cursorBrush = SolidColor(colorScheme.onSurface),
+            scrollState = scrollState,
             modifier = Modifier
                 .background(colorScheme.surface)
                 .padding(start = dimensions.nano.m)
                 .fillMaxSize()
-                .verticalScroll(scrollState) // TODO(improve): https://github.com/NeoUtils/NeoRegex/issues/15
                 .onFocusChanged(onFocusChange)
                 .drawBehind {
                     val drawMatches = textLayout
@@ -168,21 +162,21 @@ actual fun TextEditor(
                                             match.range.last
                                         )
                                         .map {
-                                            it.deflate(
-                                                delta = 0.8f
-                                            )
+                                            it.translate(-scrollState.verticalOffset)
                                         }
                                 )
 
                             }
-                        }
-                        .orEmpty()
+                        }.orEmpty()
 
                     drawMatches.forEach { (_, rects) ->
                         rects.forEach { rect ->
                             drawRect(
                                 color = config.matchColor,
-                                topLeft = Offset(rect.left, rect.top),
+                                topLeft = Offset(
+                                    rect.left,
+                                    rect.top
+                                ),
                                 size = Size(rect.width, rect.height)
                             )
                         }
@@ -202,7 +196,7 @@ actual fun TextEditor(
                                 color = config.selectedMatchColor,
                                 topLeft = Offset(
                                     x = rect.left,
-                                    y = rect.top - scrollState.value
+                                    y = rect.top
                                 ),
                                 size = Size(rect.width, rect.height),
                                 style = Stroke(
@@ -213,7 +207,7 @@ actual fun TextEditor(
                     }
                 },
             onTextLayout = {
-                textLayout = it
+                textLayout = it()
             }
         )
     }

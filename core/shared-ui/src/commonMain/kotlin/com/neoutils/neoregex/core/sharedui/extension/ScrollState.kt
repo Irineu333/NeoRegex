@@ -16,20 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.neoutils.neoregex.core.repository.text
+package com.neoutils.neoregex.core.sharedui.extension
 
-import com.neoutils.neoregex.core.common.model.TextState
-import com.neoutils.neoregex.core.repository.model.SampleState
-import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.foundation.ScrollState
+import androidx.compose.ui.geometry.Offset
 
-interface TextSampleRepository {
-
-    val flow : StateFlow<SampleState>
-    val sample get() = flow.value
-
-    fun update(input: TextState)
-    fun clear(initial: TextState = TextState())
-
-    fun undo()
-    fun redo()
-}
+val ScrollState.verticalOffset get() = Offset(0f, value.toFloat())

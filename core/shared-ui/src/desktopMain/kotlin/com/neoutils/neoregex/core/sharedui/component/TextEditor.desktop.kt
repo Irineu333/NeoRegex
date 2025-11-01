@@ -25,9 +25,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.rememberTextFieldVerticalScrollState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.*
@@ -53,9 +54,7 @@ import com.neoutils.neoregex.core.common.extension.toText
 import com.neoutils.neoregex.core.common.extension.toTextFieldValue
 import com.neoutils.neoregex.core.common.model.Match
 import com.neoutils.neoregex.core.common.model.DrawMatch
-import com.neoutils.neoregex.core.common.model.TextState
 import com.neoutils.neoregex.core.designsystem.theme.LocalDimensions
-import com.neoutils.neoregex.core.designsystem.theme.NeoTheme.dimensions
 import com.neoutils.neoregex.core.sharedui.extension.toText
 import com.neoutils.neoregex.core.sharedui.extension.tooltip
 import kotlin.math.roundToInt
@@ -63,8 +62,7 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 actual fun TextEditor(
-    value: TextState,
-    onValueChange: (TextState) -> Unit,
+    state: TextFieldState,
     modifier: Modifier,
     onFocusChange: (FocusState) -> Unit,
     matches: List<Match>,
@@ -76,7 +74,7 @@ actual fun TextEditor(
         letterSpacing = 1.sp,
     ).merge(textStyle)
 
-    val scrollState = rememberTextFieldVerticalScrollState()
+    val scrollState = rememberScrollState()
 
     val scrollbarAdapter = rememberScrollbarAdapter(scrollState)
 
@@ -92,7 +90,7 @@ actual fun TextEditor(
 
         LineNumbers(
             count = textLayout?.lineCount ?: 1,
-            offset = scrollState.offset.roundToInt(),
+            offset = scrollState.value,
             textStyle = TextStyle(
                 lineHeight = mergedTextStyle.lineHeight,
                 fontSize = mergedTextStyle.fontSize,
@@ -107,14 +105,9 @@ actual fun TextEditor(
                 .fillMaxHeight()
         )
 
-        val textFileValue = remember(value) { value.toTextFieldValue() }
-
         // TODO(improve): it's not performant for large text
         BasicTextField(
-            value = textFileValue,
-            onValueChange = {
-                onValueChange(it.toText())
-            },
+            state = state,
             scrollState = scrollState,
             textStyle = mergedTextStyle.copy(
                 lineHeightStyle = LineHeightStyle(
@@ -132,7 +125,7 @@ actual fun TextEditor(
                 .fillMaxSize()
                 .onPointerEvent(PointerEventType.Move) { event ->
                     hoverOffset = event.changes.first().position.let {
-                        it.copy(y = it.y + scrollState.offset)
+                        it.copy(y = it.y + scrollState.value)
                     }
                 }
                 .onPointerEvent(PointerEventType.Exit) {
@@ -161,7 +154,7 @@ actual fun TextEditor(
                                 color = config.matchColor,
                                 topLeft = Offset(
                                     x = rect.left,
-                                    y = rect.top - scrollState.offset
+                                    y = rect.top - scrollState.value
                                 ),
                                 size = Size(rect.width, rect.height)
                             )
@@ -181,7 +174,7 @@ actual fun TextEditor(
                                    color = config.selectedMatchColor,
                                    topLeft = Offset(
                                        x = rect.left,
-                                       y = rect.top - scrollState.offset
+                                       y = rect.top - scrollState.value
                                    ),
                                    size = Size(rect.width, rect.height),
                                    style = Stroke(
@@ -198,9 +191,9 @@ actual fun TextEditor(
                                 ).let {
                                     Rect(
                                         left = offset.x,
-                                        top = it.top - scrollState.offset,
+                                        top = it.top - scrollState.value,
                                         right = offset.x,
-                                        bottom = it.bottom - scrollState.offset
+                                        bottom = it.bottom - scrollState.value
                                     )
                                 },
                                 measure = textMeasurer.measure(
@@ -216,7 +209,7 @@ actual fun TextEditor(
                     }
                 },
             onTextLayout = {
-                textLayout = it
+                textLayout = it()
             },
         )
 

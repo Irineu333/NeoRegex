@@ -28,9 +28,10 @@ interface PatternStateRepository {
     val pattern get() = flow.value
 
     fun update(input: TextState)
+    fun cleanUpdate(initial: TextState)
 
     fun undo()
-    fun redo()
 
-    fun clear(initial: TextState = TextState())
+    fun redo()
+    fun clear()
 }
