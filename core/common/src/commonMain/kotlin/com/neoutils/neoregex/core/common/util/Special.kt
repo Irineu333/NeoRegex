@@ -18,15 +18,13 @@
 
 package com.neoutils.neoregex.core.common.util
 
-import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.isAltPressed
-import androidx.compose.ui.input.key.isCtrlPressed
-import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.*
 
 enum class Special {
     CTRL,
     SHIFT,
-    ALT;
+    ALT,
+    META;
 
     companion object {
         fun from(keyEvent: KeyEvent) = buildList {
@@ -38,6 +36,9 @@ enum class Special {
             }
             if (keyEvent.isAltPressed) {
                 add(ALT)
+            }
+            if (keyEvent.isMetaPressed) {
+                add(META)
             }
         }
     }

@@ -99,7 +99,7 @@ fun ApplicationScope.DesktopApp() {
             App(
                 modifier = Modifier.onKeyEvent {
                     when (Command.from(it)) {
-                        Command.Save -> {
+                        Command.SAVE -> {
                             coroutine.launch {
                                 salvageManager.update()
                             }
