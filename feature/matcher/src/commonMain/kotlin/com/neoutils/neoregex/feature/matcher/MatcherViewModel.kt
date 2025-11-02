@@ -27,7 +27,7 @@ import com.neoutils.neoregex.core.common.model.HistoryState
 import com.neoutils.neoregex.core.common.model.Inputs
 import com.neoutils.neoregex.core.common.model.Match
 import com.neoutils.neoregex.core.repository.pattern.PatternStateRepository
-import com.neoutils.neoregex.core.repository.text.TextSampleRepository
+import com.neoutils.neoregex.core.repository.text.SampleRepository
 import com.neoutils.neoregex.core.sharedui.event.FooterAction
 import com.neoutils.neoregex.core.sharedui.component.Performance
 import com.neoutils.neoregex.feature.matcher.action.MatcherAction
@@ -39,13 +39,13 @@ import kotlin.time.ExperimentalTime
 
 class MatcherViewModel(
     private val patternStateRepository: PatternStateRepository,
-    private val textSampleRepository: TextSampleRepository
+    private val sampleRepository: SampleRepository
 ) : ScreenModel {
 
     private val field = MutableStateFlow<Field?>(value = null)
 
     private val resultFlow = combine(
-        textSampleRepository.flow.map { it.text.value }.distinctUntilChanged(),
+        sampleRepository.textFlow.distinctUntilChanged(),
         patternStateRepository.flow.map { it.text.value }.distinctUntilChanged()
     ) { text, pattern ->
 
@@ -91,7 +91,7 @@ class MatcherViewModel(
 
     private val historyFlow = combine(
         field,
-        textSampleRepository.flow.map { it.history },
+        sampleRepository.historyFlow,
         patternStateRepository.flow.map { it.history }
     ) { target, textHistory, patternHistory ->
         when (target) {
@@ -104,12 +104,10 @@ class MatcherViewModel(
 
     private val inputFlow = combine(
         field,
-        textSampleRepository.flow.map { it.text },
         patternStateRepository.flow.map { it.text },
-    ) { target, text, pattern ->
+    ) { target,   pattern ->
         Inputs(
             field = target,
-            text = text,
             regex = pattern
         )
     }
@@ -139,6 +137,8 @@ class MatcherViewModel(
         initialValue = MatcherUiState()
     )
 
+    val sampleField = sampleRepository.field
+
     fun onAction(action: FooterAction) {
         when (action) {
             is FooterAction.UpdateRegex -> {
@@ -165,10 +165,6 @@ class MatcherViewModel(
 
     fun onAction(action: MatcherAction) {
         when (action) {
-            is MatcherAction.UpdateText -> {
-                textSampleRepository.update(action.text)
-            }
-
             is MatcherAction.TargetChange -> {
                 field.value = action.field
             }
@@ -202,7 +198,7 @@ class MatcherViewModel(
     private fun redo(field: Field) {
         when (field) {
             Field.TEXT -> {
-                textSampleRepository.redo()
+                sampleRepository.redo()
             }
 
             Field.REGEX -> {
@@ -214,7 +210,7 @@ class MatcherViewModel(
     private fun undo(field: Field) {
         when (field) {
             Field.TEXT -> {
-                textSampleRepository.undo()
+                sampleRepository.undo()
             }
 
             Field.REGEX -> {

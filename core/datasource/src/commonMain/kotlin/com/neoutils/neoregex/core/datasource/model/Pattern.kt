@@ -24,6 +24,6 @@ data class Pattern(
     val id: Long? = null,
     val title: String,
     val pattern: String,
-    val sample: String,
+    val sample: CharSequence,
     val testCases: List<TestCase>
 )

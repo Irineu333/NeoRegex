@@ -18,6 +18,7 @@
 
 package com.neoutils.neoregex.core.sharedui.component
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
@@ -30,8 +31,7 @@ import com.neoutils.neoregex.core.common.model.TextState
 
 @Composable
 expect fun TextEditor(
-    value: TextState,
-    onValueChange: (TextState) -> Unit,
+    state: TextFieldState,
     modifier: Modifier = Modifier,
     onFocusChange: (FocusState) -> Unit = {},
     matches: List<Match> = listOf(),

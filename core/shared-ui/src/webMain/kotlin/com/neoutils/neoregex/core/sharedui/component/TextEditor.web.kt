@@ -28,6 +28,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.*
@@ -38,7 +39,6 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -49,21 +49,18 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 import com.neoutils.neoregex.core.common.extension.getBoundingBoxes
-import com.neoutils.neoregex.core.common.extension.toText
-import com.neoutils.neoregex.core.common.extension.toTextFieldValue
 import com.neoutils.neoregex.core.common.model.DrawMatch
 import com.neoutils.neoregex.core.common.model.Match
-import com.neoutils.neoregex.core.common.model.TextState
 import com.neoutils.neoregex.core.common.util.InteractionMode
 import com.neoutils.neoregex.core.designsystem.theme.LocalDimensions
 import com.neoutils.neoregex.core.sharedui.extension.toText
 import com.neoutils.neoregex.core.sharedui.extension.tooltip
+import com.neoutils.neoregex.core.sharedui.extension.verticalOffset
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 actual fun TextEditor(
-    value: TextState,
-    onValueChange: (TextState) -> Unit,
+    state: TextFieldState,
     modifier: Modifier,
     onFocusChange: (FocusState) -> Unit,
     matches: List<Match>,
@@ -109,6 +106,9 @@ actual fun TextEditor(
                                         match.range.first,
                                         match.range.last
                                     )
+                                    .map {
+                                        it.translate(-scrollState.verticalOffset)
+                                    }
                                     .any {
                                         it.contains(interaction.press.pressPosition)
                                     }
@@ -149,14 +149,10 @@ actual fun TextEditor(
                 .background(colorScheme.surfaceVariant)
                 .fillMaxHeight()
         )
-        val textFileValue = remember(value) { value.toTextFieldValue() }
 
         // TODO(improve): it's not performant for large text
         BasicTextField(
-            value = textFileValue,
-            onValueChange = {
-                onValueChange(it.toText())
-            },
+            state = state,
             textStyle = mergedTextStyle.copy(
                 lineHeightStyle = LineHeightStyle(
                     alignment = LineHeightStyle.Alignment.Proportional,
@@ -166,14 +162,13 @@ actual fun TextEditor(
             ),
             interactionSource = interactionSource,
             cursorBrush = SolidColor(colorScheme.onSurface),
+            scrollState = scrollState,
             modifier = Modifier
                 .background(colorScheme.surface)
                 .onFocusChanged(onFocusChange)
                 .padding(start = dimensions.nano.m)
                 .weight(weight = 1f, fill = false)
                 .fillMaxSize()
-                .verticalScroll(scrollState) // TODO(improve): https://github.com/NeoUtils/NeoRegex/issues/15
-                .onFocusChanged(onFocusChange)
                 .onPointerEvent(PointerEventType.Move) { event ->
                     hoverOffset = event.changes.first().position.let {
                         it.copy(y = it.y)
@@ -191,9 +186,7 @@ actual fun TextEditor(
                                     match.range.first,
                                     match.range.last
                                 ).map {
-                                    it.deflate(
-                                        delta = 0.8f
-                                    )
+                                    it.translate(-scrollState.verticalOffset)
                                 }
                             )
                         }
@@ -207,7 +200,7 @@ actual fun TextEditor(
                                     x = rect.left,
                                     y = rect.top
                                 ),
-                                size = Size(rect.width, rect.height)
+                                size = rect.size * 0.95f
                             )
                         }
                     }
@@ -229,10 +222,8 @@ actual fun TextEditor(
                                                 x = rect.left,
                                                 y = rect.top
                                             ),
-                                            size = Size(rect.width, rect.height),
-                                            style = Stroke(
-                                                width = 1f
-                                            )
+                                            size = rect.size * 0.95f,
+                                            style = Stroke(width = 1f)
                                         )
                                     }
 
@@ -279,10 +270,8 @@ actual fun TextEditor(
                                             x = rect.left,
                                             y = rect.top
                                         ),
-                                        size = Size(rect.width, rect.height),
-                                        style = Stroke(
-                                            width = 1f
-                                        )
+                                        size = rect.size * 0.95f,
+                                        style = Stroke(width = 1f)
                                     )
                                 }
                             }
@@ -290,7 +279,7 @@ actual fun TextEditor(
                     }
                 },
             onTextLayout = {
-                textLayout = it
+                textLayout = it()
             },
         )
 

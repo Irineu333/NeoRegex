@@ -24,8 +24,8 @@ import com.neoutils.neoregex.core.repository.patterns.PatternsRepository
 import com.neoutils.neoregex.core.repository.patterns.PatternsRepositoryImpl
 import com.neoutils.neoregex.core.repository.testcase.TestCasesRepository
 import com.neoutils.neoregex.core.repository.testcase.TestCasesRepositoryImpl
-import com.neoutils.neoregex.core.repository.text.TextSampleRepository
-import com.neoutils.neoregex.core.repository.text.TextSampleRepositoryImpl
+import com.neoutils.neoregex.core.repository.text.SampleRepository
+import com.neoutils.neoregex.core.repository.text.SampleRepositoryImpl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -33,6 +33,6 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single { PatternStateRepositoryImpl() } bind PatternStateRepository::class
     single { TestCasesRepositoryImpl() } bind TestCasesRepository::class
-    single { TextSampleRepositoryImpl() } bind TextSampleRepository::class
+    single { SampleRepositoryImpl() } bind SampleRepository::class
     singleOf(::PatternsRepositoryImpl) bind PatternsRepository::class
 }

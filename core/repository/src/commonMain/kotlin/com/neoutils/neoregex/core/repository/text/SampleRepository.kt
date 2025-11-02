@@ -16,16 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.neoutils.neoregex.core.common.model
+package com.neoutils.neoregex.core.repository.text
 
-import androidx.compose.foundation.text.input.UndoState
+import androidx.compose.foundation.text.input.TextFieldState
+import com.neoutils.neoregex.core.common.model.HistoryState
+import kotlinx.coroutines.flow.Flow
 
-data class HistoryState(
-    val canUndo: Boolean = false,
-    val canRedo: Boolean = false,
-) {
-    constructor(undoState: UndoState) : this(
-        canRedo = undoState.canRedo,
-        canUndo = undoState.canUndo,
-    )
+interface SampleRepository {
+
+    val field: TextFieldState
+
+    val textFlow: Flow<CharSequence>
+    val historyFlow: Flow<HistoryState>
+
+    fun update(input: CharSequence)
+    fun cleanUpdate(input: CharSequence)
+    fun clear()
+
+    fun undo()
+    fun redo()
 }
