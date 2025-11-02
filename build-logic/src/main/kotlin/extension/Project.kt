@@ -28,7 +28,7 @@ val config = Config(
         major = 3,
         minor = 3,
         patch = 0,
-        stage = Config.Stage.DEVELOP
+        stage = Config.Stage.RELEASE
     ),
     basePackage = "com.neoutils.neoregex",
     name = "NeoRegex"
