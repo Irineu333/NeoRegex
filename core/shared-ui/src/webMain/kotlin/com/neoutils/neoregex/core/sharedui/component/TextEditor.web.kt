@@ -53,6 +53,7 @@ import com.neoutils.neoregex.core.common.model.DrawMatch
 import com.neoutils.neoregex.core.common.model.Match
 import com.neoutils.neoregex.core.common.util.InteractionMode
 import com.neoutils.neoregex.core.designsystem.theme.LocalDimensions
+import com.neoutils.neoregex.core.sharedui.extension.minus
 import com.neoutils.neoregex.core.sharedui.extension.toText
 import com.neoutils.neoregex.core.sharedui.extension.tooltip
 import com.neoutils.neoregex.core.sharedui.extension.verticalOffset
@@ -170,9 +171,7 @@ actual fun TextEditor(
                 .weight(weight = 1f, fill = false)
                 .fillMaxSize()
                 .onPointerEvent(PointerEventType.Move) { event ->
-                    hoverOffset = event.changes.first().position.let {
-                        it.copy(y = it.y)
-                    }
+                    hoverOffset = event.changes.first().position
                 }
                 .onPointerEvent(PointerEventType.Exit) {
                     hoverOffset = null
@@ -200,7 +199,7 @@ actual fun TextEditor(
                                     x = rect.left,
                                     y = rect.top
                                 ),
-                                size = rect.size * 0.95f
+                                size = rect.size - 1f,
                             )
                         }
                     }
@@ -222,24 +221,18 @@ actual fun TextEditor(
                                                 x = rect.left,
                                                 y = rect.top
                                             ),
-                                            size = rect.size * 0.95f,
+                                            size = rect.size - 1f,
                                             style = Stroke(width = 1f)
                                         )
                                     }
 
-                                    val rect = rects.first { it.contains(offset) }
-
                                     tooltip(
-                                        anchorRect = rect.inflate(
-                                            delta = 0.8f
-                                        ).let {
-                                            Rect(
-                                                left = offset.x,
-                                                top = it.top,
-                                                right = offset.x,
-                                                bottom = it.bottom
-                                            )
-                                        },
+                                        anchorRect = rects.first {
+                                            it.contains(offset)
+                                        }.copy(
+                                            left = offset.x,
+                                            right = offset.x
+                                        ),
                                         measure = textMeasurer.measure(
                                             text = match.toText(),
                                             style = mergedTextStyle.copy(
@@ -270,7 +263,7 @@ actual fun TextEditor(
                                             x = rect.left,
                                             y = rect.top
                                         ),
-                                        size = rect.size * 0.95f,
+                                        size = rect.size - 1f,
                                         style = Stroke(width = 1f)
                                     )
                                 }

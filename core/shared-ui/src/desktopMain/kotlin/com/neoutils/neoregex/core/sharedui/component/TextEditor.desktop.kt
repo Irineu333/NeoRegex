@@ -53,6 +53,7 @@ import com.neoutils.neoregex.core.common.extension.getBoundingBoxes
 import com.neoutils.neoregex.core.common.model.Match
 import com.neoutils.neoregex.core.common.model.DrawMatch
 import com.neoutils.neoregex.core.designsystem.theme.LocalDimensions
+import com.neoutils.neoregex.core.sharedui.extension.minus
 import com.neoutils.neoregex.core.sharedui.extension.toText
 import com.neoutils.neoregex.core.sharedui.extension.tooltip
 import com.neoutils.neoregex.core.sharedui.extension.verticalOffset
@@ -150,7 +151,7 @@ actual fun TextEditor(
                                     x = rect.left,
                                     y = rect.top,
                                 ),
-                                size = rect.size * 0.95f,
+                                size = rect.size - 1f,
                             )
                         }
                     }
@@ -170,7 +171,7 @@ actual fun TextEditor(
                                         x = rect.left,
                                         y = rect.top,
                                     ),
-                                    size = rect.size * 0.95f,
+                                    size = rect.size - 1f,
                                     style = Stroke(width = 1f)
                                 )
                             }
@@ -178,14 +179,10 @@ actual fun TextEditor(
                             tooltip(
                                 anchorRect = rects.first {
                                     it.contains(offset)
-                                }.let {
-                                    Rect(
-                                        left = offset.x,
-                                        top = it.top,
-                                        right = offset.x,
-                                        bottom = it.bottom
-                                    )
-                                },
+                                }.copy(
+                                    left = offset.x,
+                                    right = offset.x
+                                ),
                                 measure = textMeasurer.measure(
                                     text = match.toText(),
                                     style = mergedTextStyle.copy(

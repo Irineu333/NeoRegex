@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextLayoutResult
@@ -48,7 +49,9 @@ import com.neoutils.neoregex.core.common.extension.getBoundingBoxes
 import com.neoutils.neoregex.core.common.model.DrawMatch
 import com.neoutils.neoregex.core.common.model.Match
 import com.neoutils.neoregex.core.designsystem.theme.NeoTheme.dimensions
+import com.neoutils.neoregex.core.sharedui.extension.minus
 import com.neoutils.neoregex.core.sharedui.extension.verticalOffset
+import java.math.BigDecimal
 
 @Composable
 actual fun TextEditor(
@@ -175,7 +178,7 @@ actual fun TextEditor(
                                     rect.left,
                                     rect.top
                                 ),
-                                size = rect.size * 0.95f,
+                                size = rect.size - 2f,
                             )
                         }
                     }
@@ -196,7 +199,7 @@ actual fun TextEditor(
                                     x = rect.left,
                                     y = rect.top
                                 ),
-                                size = rect.size * 0.95f,
+                                size = rect.size - 2f,
                                 style = Stroke(width = 1f)
                             )
                         }
