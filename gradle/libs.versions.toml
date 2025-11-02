@@ -1,35 +1,42 @@
 [versions]
-agp = "8.5.2"
+agp = "8.6.1" # requires Gradle 8.6+
+kotlin = "2.2.0" # recommends Gradle 8.6+ and JDK 17+
+cmp = "1.9.2" # requires Kotlin 2.1.0+ and compileSdk 35+
+
+android-compileSdk = "35" # recommends AGP 8.6.0+
+android-minSdk = "24"
+android-targetSdk = "35"
+
 bugsnag = "3.7.2"
 bugsnag-android = "6.13.0"
 bugsnag-android-performance = "1.12.0"
-cmp = "1.7.0" # Jetpack Compose 1.7.0 & APG 8.1+
-dbus-java-core = "5.1.0"
-kotlin = "2.0.20" # Gradle 7.5 ~ 8.8 & AGP 7.4.2 ~ 8.5
-kotlinx-datetime = "0.6.1"
-kotlinx-serialization = "1.7.3"
-multiplatform-settings = "1.2.0"
-slf4j-nop = "2.0.16"
-stately-common = "2.0.6"
-voyager = "1.1.0-beta03" # 1.1.0+ is required for web support
-koin = "4.0.0"
-buildkonfig = "0.17.1"
-aboutlibraries = "11.2.3"
-sqldelight = "2.0.2"
-napier = "2.7.1"
 
-# androix
+dbus-java-core = "5.1.0"
+
+kotlinx-datetime = "0.7.1"
+kotlinx-serialization = "1.7.3"
+kotlinx-coroutines = "1.9.0"
 androidx-compose = "1.7.4"
 androidx-activity = "1.9.3"
-androidx-lifecycle = "2.8.3"
+jetbrains-androidx-lifecycle = "2.8.3"
+koin = "4.0.0"
 
-# kotlinx
-kotlinx-coroutines = "1.9.0"
+multiplatform-settings = "1.2.0"
 
-# neoutils
+slf4j-nop = "2.0.16"
+
+stately-common = "2.0.6"
+
+voyager = "1.1.0-beta03" # 1.1.0+ is required for web support
+
+buildkonfig = "0.17.1"
+
+aboutlibraries = "11.2.3"
+
+sqldelight = "2.0.2"
+
 highlight = "2.3.0-snapshot16"
 xregex = "1.0.0-rc1"
-foundation-layout-android = "1.7.8"
 
 [libraries]
 
@@ -38,46 +45,43 @@ plugin-android-gradle = { module = "com.android.tools.build:gradle", version.ref
 plugin-kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-compose = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "cmp" }
 plugin-compose-compiler = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
-plugin-sqldelight = { module = "app.cash.sqldelight:gradle-plugin", version.ref = "sqldelight" }
 
-# android
+# bugsnag
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-android-performance = { module = "com.bugsnag:bugsnag-android-performance", version.ref = "bugsnag-android-performance" }
-
-androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose" }
-
-androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
-
-# desktop
 bugsnag-desktop = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag" }
 
-# multiplatform
-androidx-multplatform-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
-androidx-multplatform-lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
-androidx-multplatform-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
-aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlibraries" }
+# compose
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose" }
+androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-androidx-lifecycle" }
+
+# jetbrains
+jetbrains-androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "jetbrains-androidx-lifecycle" }
+jetbrains-androidx-lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "jetbrains-androidx-lifecycle" }
+jetbrains-androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-androidx-lifecycle" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 
+# neoutils
 neoutils-xregex = { group = "com.neoutils.xregex", name = "xregex", version.ref = "xregex" }
-highlight-compose = { module = "com.neoutils.highlight:highlight-compose", version.ref = "highlight" }
+neoutils-highlight-compose = { module = "com.neoutils.highlight:highlight-compose", version.ref = "highlight" }
 
+# settings
 multiplatform-settings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
 multiplatform-settings-serialization = { module = "com.russhwolf:multiplatform-settings-serialization", version.ref = "multiplatform-settings" }
 
-stately-common = { module = "co.touchlab:stately-common", version.ref = "stately-common" }
-
+# voyager
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-
-napier = { module = "io.github.aakira:napier", version.ref = "napier" }
-
+# koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -88,33 +92,30 @@ sqldelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", versi
 sqldelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version = "2.0.0-alpha05" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 
-# test
-
-kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
-
-# desktop
-kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
-slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j-nop" }
-
+# dbus
 dbus-java-core = { module = "com.github.hypfvieh:dbus-java-core", version.ref = "dbus-java-core" }
 dbus-java-transport-native-unixsocket = { module = "com.github.hypfvieh:dbus-java-transport-native-unixsocket", version.ref = "dbus-java-core" }
-androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundation-layout-android" }
+
+# other
+aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlibraries" }
+stately-common = { module = "co.touchlab:stately-common", version.ref = "stately-common" }
+slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j-nop" }
 
 [plugins]
 
-# android
+## android
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 
-# multiplatform
+## multiplatform
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kmp-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kmp-compose = { id = "org.jetbrains.compose", version.ref = "cmp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "cmp" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlibraries" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 
-# internal
+## internal
 neoutils-neoregex-core = { id = "com.neoutils.neoregex.core", version = "undefined" }
 neoutils-neoregex-web = { id = "com.neoutils.neoregex.web-app", version = "undefined" }
 neoutils-neoregex-desktop = { id = "com.neoutils.neoregex.desktop-app", version = "undefined" }

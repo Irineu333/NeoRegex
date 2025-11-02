@@ -46,7 +46,7 @@ kotlin {
             implementation(catalog.voyager.koin)
 
             // NeoUtils
-            implementation(libs.highlight.compose)
+            implementation(libs.neoutils.highlight.compose)
         }
     }
 }

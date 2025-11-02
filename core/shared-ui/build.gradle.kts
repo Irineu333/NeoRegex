@@ -37,7 +37,7 @@ kotlin {
             implementation(projects.core.manager)
 
             // NeoUtils
-            implementation(libs.highlight.compose)
+            implementation(libs.neoutils.highlight.compose)
         }
     }
 }

@@ -1,9 +1,7 @@
-@file:Suppress("UnstableApiUsage")
-
 /*
  * NeoRegex.
  *
- * Copyright (C) 2024 Irineu A. Silva.
+ * Copyright (C) 2025 Irineu A. Silva.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-}
+package com.neoutils.neoregex.core.repository.text
 
-kotlin {
+import androidx.compose.foundation.text.input.TextFieldState
+import com.neoutils.neoregex.core.common.model.HistoryState
+import kotlinx.coroutines.flow.Flow
 
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-        vendor.set(JvmVendorSpec.JETBRAINS)
-    }
+interface SampleRepository {
 
-    js(name = "web", compiler = IR) {
+    val field: TextFieldState
 
-        outputModuleName = "app"
+    val textFlow: Flow<CharSequence>
+    val historyFlow: Flow<HistoryState>
 
-        browser {
-            commonWebpackConfig {
-                outputFileName = "app.js"
-            }
-        }
+    fun update(input: CharSequence)
+    fun cleanUpdate(input: CharSequence)
+    fun clear()
 
-        binaries.executable()
-    }
+    fun undo()
+    fun redo()
 }

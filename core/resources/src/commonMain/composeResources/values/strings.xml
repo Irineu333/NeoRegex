@@ -40,7 +40,7 @@
     <string name="about_runtime_text">Runtime version: %1$s</string>
     <string name="about_description_text">This software is free, licensed under the GPLv3, and uses only open source libraries.</string>
 
-    <string name="about_libraries_btn">Open source libraries</string>
+    <string name="about_libraries_btn">Libraries</string>
     <string name="about_source_code_btn">Source code</string>
     <string name="about_license_btn">License</string>
 
@@ -56,10 +56,15 @@
     <string name="salvage_save_dialog_save_btn">Save</string>
     <string name="salvage_pattern_name_hint">Pattern name</string>
 
+    <string name="menu_pattern_btn">Pattern</string>
     <string name="menu_new_btn">New</string>
     <string name="menu_open_btn">Open</string>
     <string name="menu_save_btn">Save</string>
     <string name="menu_about_btn">About</string>
+
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System</string>
 
     <string name="web_warning_text">NeoRegex web version is experimental</string>
 
@@ -72,7 +77,7 @@
     <string name="screen_about">About</string>
     <string name="screen_libraries">Libraries</string>
     <string name="screen_validator">Validator</string>
-    <string name="screen_saved">Saved</string>
+    <string name="screen_saved">Patterns</string>
 
     <string name="test_case_match_any">Match Any</string>
     <string name="test_case_match_full">Match Full</string>

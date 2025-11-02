@@ -27,7 +27,7 @@ import com.neoutils.neoregex.core.manager.navigator.NavigationManager
 import com.neoutils.neoregex.core.repository.pattern.PatternStateRepository
 import com.neoutils.neoregex.core.repository.patterns.PatternsRepository
 import com.neoutils.neoregex.core.repository.testcase.TestCasesRepository
-import com.neoutils.neoregex.core.repository.text.TextSampleRepository
+import com.neoutils.neoregex.core.repository.text.SampleRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,7 +40,7 @@ class SalvageManagerImpl(
     private val patternsRepository: PatternsRepository,
     private val patternStateRepository: PatternStateRepository,
     private val testCasesRepository: TestCasesRepository,
-    private val textStateRepository: TextSampleRepository,
+    private val sampleRepository: SampleRepository,
     private val navigationManager: NavigationManager,
     coroutineScope: CoroutineScope
 ) : SalvageManager {
@@ -50,7 +50,7 @@ class SalvageManagerImpl(
     override val flow = combine(
         opened,
         patternStateRepository.flow,
-        textStateRepository.flow,
+        sampleRepository.textFlow,
         testCasesRepository.flow,
         patternsRepository.flow,
     ) { openedPatternId, pattern, sample, testCases, patterns ->
@@ -58,7 +58,7 @@ class SalvageManagerImpl(
             Opened(
                 id = it,
                 patternState = pattern,
-                sampleState = sample,
+                sample = sample,
                 testCases = testCases,
                 patterns = patterns
             )
@@ -73,24 +73,26 @@ class SalvageManagerImpl(
         patternStateRepository.flow
     ) { opened, pattern ->
         opened == null && pattern.isValid
-    }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = false,
+    )
 
     override suspend fun open(id: Long) {
         opened.value = id
 
         val pattern = patternsRepository.get(id) ?: return
 
-        textStateRepository.clear(TextState(pattern.sample))
-        patternStateRepository.clear(TextState(pattern.pattern))
-        testCasesRepository.clear()
-
-        sync()
+        sampleRepository.cleanUpdate(pattern.sample)
+        patternStateRepository.cleanUpdate(TextState(pattern.pattern))
+        testCasesRepository.setAll(pattern.testCases)
     }
 
     override suspend fun close() {
         opened.value = null
 
-        textStateRepository.clear()
+        sampleRepository.clear()
         patternStateRepository.clear()
         testCasesRepository.clear()
 
@@ -110,7 +112,7 @@ class SalvageManagerImpl(
             id = id
         ) { pattern ->
             pattern.copy(
-                sample = textStateRepository.sample.text.value,
+                sample = sampleRepository.field.text,
                 pattern = patternStateRepository.pattern.text.value,
                 testCases = testCasesRepository.all.map { testCase ->
                     TestCase(
@@ -126,10 +128,9 @@ class SalvageManagerImpl(
 
     override suspend fun sync() {
         val id = opened.value ?: return
-
         val pattern = patternsRepository.get(id) ?: return
 
-        textStateRepository.update(TextState(pattern.sample))
+        sampleRepository.cleanUpdate(pattern.sample)
         patternStateRepository.update(TextState(pattern.pattern))
         testCasesRepository.setAll(pattern.testCases)
     }
@@ -142,10 +143,13 @@ class SalvageManagerImpl(
     }
 
     override suspend fun save(name: String) {
+
+        if (!canSave.value) return
+
         val pattern = patternsRepository.save(
             Pattern(
                 title = name,
-                sample = textStateRepository.sample.text.value,
+                sample = sampleRepository.field.text,
                 pattern = patternStateRepository.pattern.text.value,
                 testCases = testCasesRepository.all.map {
                     TestCase(

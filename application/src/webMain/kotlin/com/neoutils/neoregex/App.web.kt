@@ -24,6 +24,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -155,42 +157,37 @@ private fun TopLabel(
 ) = Column {
 
     AnimatedVisibility(visible) {
-        ProvideTextStyle(
-            typography.labelLarge.copy(
-                color = Color.Black
-            )
+        Box(
+            modifier = Modifier
+                .background(Color.Yellow)
+                .fillMaxWidth()
         ) {
-            CompositionLocalProvider(
-                LocalIndication provides ripple(color = Color.Black)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(Color.Yellow)
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = text,
-                        style = typography.labelMedium,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(vertical = dimensions.small.s),
-                    )
+            Text(
+                text = text,
+                style = typography.labelMedium,
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(vertical = dimensions.small.s),
+            )
 
-                    Icon(
-                        imageVector = Icons.Rounded.Close,
-                        contentDescription = null,
-                        tint = Color.Black,
-                        modifier = Modifier
-                            .padding(dimensions.nano.m)
-                            .size(dimensions.large.m)
-                            .clip(CircleShape)
-                            .clickable(onClick = onClose)
-                            .padding(dimensions.nano.s)
-                            .align(Alignment.CenterEnd)
+            Icon(
+                imageVector = Icons.Rounded.Close,
+                tint = Color.Black,
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(dimensions.nano.m)
+                    .size(dimensions.large.m)
+                    .clip(CircleShape)
+                    .clickable(
+                        indication = ripple(color = Color.Black),
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = onClose
                     )
-                }
-            }
+                    .padding(dimensions.nano.s)
+            )
         }
     }
 

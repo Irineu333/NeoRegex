@@ -26,14 +26,9 @@ import org.gradle.kotlin.dsl.the
 val config = Config(
     version = Config.Version(
         major = 3,
-        minor = 2,
+        minor = 3,
         patch = 0,
         stage = Config.Stage.RELEASE
-    ),
-    android = Config.Android(
-        compileSdk = 34,
-        minSdk = 24,
-        targetSdk = 34
     ),
     basePackage = "com.neoutils.neoregex",
     name = "NeoRegex"

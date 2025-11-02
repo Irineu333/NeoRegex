@@ -21,7 +21,6 @@ package model
 data class Config(
     val name: String,
     val version: Version,
-    val android: Android,
     val basePackage: String
 ) {
     data class Version(
@@ -29,12 +28,6 @@ data class Config(
         val minor: Int,
         val patch: Int,
         val stage: Stage
-    )
-
-    data class Android(
-        val compileSdk: Int,
-        val minSdk: Int,
-        val targetSdk: Int
     )
 
     enum class Stage(val suffix: String?) {

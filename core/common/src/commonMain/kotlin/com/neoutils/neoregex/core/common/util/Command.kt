@@ -19,6 +19,8 @@
 package com.neoutils.neoregex.core.common.util
 
 import androidx.compose.ui.input.key.*
+import com.neoutils.neoregex.core.common.platform.Platform
+import com.neoutils.neoregex.core.common.platform.platform
 
 enum class Command(
     val modifies: List<Special>,
@@ -26,20 +28,49 @@ enum class Command(
     val type: KeyEventType = KeyEventType.KeyDown
 ) {
     UNDO(
-        modifies = listOf(Special.CTRL),
+        modifies = when (platform) {
+            Platform.Desktop.MacOS -> {
+                listOf(Special.META)
+            }
+
+            else -> {
+                listOf(Special.CTRL)
+            }
+        },
         key = Key.Z
     ),
     REDO(
-        modifies = listOf(
-            Special.CTRL,
-            Special.SHIFT
-        ),
+        modifies = when (platform) {
+            Platform.Desktop.MacOS -> {
+                listOf(
+                    Special.SHIFT,
+                    Special.META
+                )
+            }
+
+            else -> {
+                listOf(
+                    Special.CTRL,
+                    Special.SHIFT
+                )
+            }
+        },
         key = Key.Z
     ),
-    Save(
-        modifies = listOf(
-            Special.CTRL
-        ),
+    SAVE(
+        modifies = when (platform) {
+            Platform.Desktop.MacOS -> {
+                listOf(
+                    Special.META
+                )
+            }
+
+            else -> {
+                listOf(
+                    Special.CTRL
+                )
+            }
+        },
         key = Key.S
     );
 

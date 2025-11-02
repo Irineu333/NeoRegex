@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:OptIn(ExperimentalTime::class, ExperimentalUuidApi::class)
+
 package com.neoutils.neoregex.core.database
 
 import com.neoutils.neoregex.core.common.extension.deepNotEquals
@@ -24,16 +26,15 @@ import com.neoutils.neoregex.core.common.model.TestCase.Case
 import com.neoutils.neoregex.core.database.db.PatternDatabase
 import com.neoutils.neoregex.core.datasource.PatternsDataSource
 import com.neoutils.neoregex.core.datasource.model.Pattern
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
 internal class PatternsSqlDelightDataSource(
     private val database: PatternDatabase
 ) : PatternsDataSource {
 
-    @OptIn(ExperimentalUuidApi::class)
     override suspend fun save(pattern: Pattern): Pattern {
         return database.transactionWithResult {
             val createAt = Clock.System.now().toEpochMilliseconds()
@@ -41,7 +42,7 @@ internal class PatternsSqlDelightDataSource(
             database.patternEntityQueries.insertPattern(
                 title = pattern.title,
                 pattern = pattern.pattern,
-                sample = pattern.sample,
+                sample = pattern.sample.toString(),
                 createAt = createAt
             )
 
@@ -137,7 +138,7 @@ internal class PatternsSqlDelightDataSource(
                     id = id,
                     title = newPattern.title,
                     pattern = newPattern.pattern,
-                    sample = newPattern.sample
+                    sample = newPattern.sample.toString()
                 )
             }
 

@@ -16,20 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.neoutils.neoregex.core.repository.text
+package com.neoutils.neoregex.core.sharedui.extension
 
-import com.neoutils.neoregex.core.common.model.TextState
-import com.neoutils.neoregex.core.repository.model.SampleState
-import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.ui.geometry.Size
 
-interface TextSampleRepository {
-
-    val flow : StateFlow<SampleState>
-    val sample get() = flow.value
-
-    fun update(input: TextState)
-    fun clear(initial: TextState = TextState())
-
-    fun undo()
-    fun redo()
-}
+operator fun Size.minus(other: Float) = copy(
+    width = width - other,
+    height = height - other
+)

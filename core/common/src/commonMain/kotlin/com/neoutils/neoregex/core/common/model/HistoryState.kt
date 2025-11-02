@@ -18,7 +18,14 @@
 
 package com.neoutils.neoregex.core.common.model
 
+import androidx.compose.foundation.text.input.UndoState
+
 data class HistoryState(
     val canUndo: Boolean = false,
     val canRedo: Boolean = false,
-)
+) {
+    constructor(undoState: UndoState) : this(
+        canRedo = undoState.canRedo,
+        canUndo = undoState.canUndo,
+    )
+}

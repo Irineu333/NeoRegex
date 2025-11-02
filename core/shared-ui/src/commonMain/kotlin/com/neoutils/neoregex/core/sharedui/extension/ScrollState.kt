@@ -1,9 +1,7 @@
-@file:Suppress("UnstableApiUsage")
-
 /*
  * NeoRegex.
  *
- * Copyright (C) 2024 Irineu A. Silva.
+ * Copyright (C) 2025 Irineu A. Silva.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-}
+package com.neoutils.neoregex.core.sharedui.extension
 
-kotlin {
+import androidx.compose.foundation.ScrollState
+import androidx.compose.ui.geometry.Offset
 
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-        vendor.set(JvmVendorSpec.JETBRAINS)
-    }
-
-    js(name = "web", compiler = IR) {
-
-        outputModuleName = "app"
-
-        browser {
-            commonWebpackConfig {
-                outputFileName = "app.js"
-            }
-        }
-
-        binaries.executable()
-    }
-}
+val ScrollState.verticalOffset get() = Offset(0f, value.toFloat())

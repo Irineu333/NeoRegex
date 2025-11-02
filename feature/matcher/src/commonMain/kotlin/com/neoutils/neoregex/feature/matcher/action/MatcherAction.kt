@@ -29,10 +29,6 @@ sealed class MatcherAction {
         val field: Field
     ) : MatcherAction()
 
-    data class UpdateText(
-        val text: TextState
-    ) : MatcherAction()
-
     sealed class History : MatcherAction() {
 
         abstract val textState: Field?

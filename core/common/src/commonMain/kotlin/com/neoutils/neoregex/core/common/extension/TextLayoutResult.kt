@@ -28,6 +28,9 @@ fun TextLayoutResult.getBoundingBoxes(start: Int, end: Int): List<Rect> {
     var lastRect: Rect? = null
     var lastLine: Int? = null
 
+    if (start >= layoutInput.text.length) return listOf()
+    if (end >= layoutInput.text.length) return listOf()
+
     for (offset in start..end) {
 
         var rect = getBoundingBox(offset)

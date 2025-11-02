@@ -60,7 +60,7 @@ kotlin {
             implementation(catalog.voyager.koin)
 
             // lifecycle
-            implementation(catalog.androidx.multplatform.lifecycle.runtime.compose)
+            implementation(catalog.jetbrains.androidx.lifecycle.runtime.compose)
 
             // compose
             implementation(compose.runtime)
@@ -69,6 +69,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
 
             // koin
             implementation(libs.koin.core)
@@ -77,10 +78,17 @@ kotlin {
 
         androidMain.dependencies {
 
+            // compose
+            implementation(compose.preview)
+
             // koin
             implementation(libs.koin.android)
         }
     }
+}
+
+dependencies {
+    debugImplementation(compose.uiTooling)
 }
 
 tasks.register<Tar>("packageReleaseTarGz") {
@@ -108,3 +116,4 @@ tasks.register<Tar>("packageReleaseTarGz") {
 aboutLibraries {
     prettyPrint = true
 }
+
