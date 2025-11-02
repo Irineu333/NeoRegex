@@ -50,14 +50,12 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 import com.neoutils.neoregex.core.common.extension.getBoundingBoxes
-import com.neoutils.neoregex.core.common.extension.toText
-import com.neoutils.neoregex.core.common.extension.toTextFieldValue
 import com.neoutils.neoregex.core.common.model.Match
 import com.neoutils.neoregex.core.common.model.DrawMatch
 import com.neoutils.neoregex.core.designsystem.theme.LocalDimensions
 import com.neoutils.neoregex.core.sharedui.extension.toText
 import com.neoutils.neoregex.core.sharedui.extension.tooltip
-import kotlin.math.roundToInt
+import com.neoutils.neoregex.core.sharedui.extension.verticalOffset
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -124,9 +122,7 @@ actual fun TextEditor(
                 .weight(weight = 1f, fill = false)
                 .fillMaxSize()
                 .onPointerEvent(PointerEventType.Move) { event ->
-                    hoverOffset = event.changes.first().position.let {
-                        it.copy(y = it.y + scrollState.value)
-                    }
+                    hoverOffset = event.changes.first().position
                 }
                 .onPointerEvent(PointerEventType.Exit) {
                     hoverOffset = null
@@ -140,9 +136,7 @@ actual fun TextEditor(
                                     match.range.first,
                                     match.range.last
                                 ).map {
-                                    it.deflate(
-                                        delta = 0.8f
-                                    )
+                                    it.translate(-scrollState.verticalOffset)
                                 }
                             )
                         }
@@ -154,9 +148,9 @@ actual fun TextEditor(
                                 color = config.matchColor,
                                 topLeft = Offset(
                                     x = rect.left,
-                                    y = rect.top - scrollState.value
+                                    y = rect.top,
                                 ),
-                                size = Size(rect.width, rect.height)
+                                size = rect.size * 0.95f,
                             )
                         }
                     }
@@ -169,31 +163,27 @@ actual fun TextEditor(
                         }
 
                         drawMatch?.let { (match, rects) ->
-                           rects.forEach { rect ->
-                               drawRect(
-                                   color = config.selectedMatchColor,
-                                   topLeft = Offset(
-                                       x = rect.left,
-                                       y = rect.top - scrollState.value
-                                   ),
-                                   size = Size(rect.width, rect.height),
-                                   style = Stroke(
-                                       width = 1f
-                                   )
-                               )
-                           }
-
-                            val rect = rects.first { it.contains(offset) }
+                            rects.forEach { rect ->
+                                drawRect(
+                                    color = config.selectedMatchColor,
+                                    topLeft = Offset(
+                                        x = rect.left,
+                                        y = rect.top,
+                                    ),
+                                    size = rect.size * 0.95f,
+                                    style = Stroke(width = 1f)
+                                )
+                            }
 
                             tooltip(
-                                anchorRect = rect.inflate(
-                                    delta = 0.8f
-                                ).let {
+                                anchorRect = rects.first {
+                                    it.contains(offset)
+                                }.let {
                                     Rect(
                                         left = offset.x,
-                                        top = it.top - scrollState.value,
+                                        top = it.top,
                                         right = offset.x,
-                                        bottom = it.bottom - scrollState.value
+                                        bottom = it.bottom
                                     )
                                 },
                                 measure = textMeasurer.measure(

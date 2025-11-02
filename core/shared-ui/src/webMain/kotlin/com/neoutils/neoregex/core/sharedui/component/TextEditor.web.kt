@@ -39,7 +39,6 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -50,8 +49,6 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 import com.neoutils.neoregex.core.common.extension.getBoundingBoxes
-import com.neoutils.neoregex.core.common.extension.toText
-import com.neoutils.neoregex.core.common.extension.toTextFieldValue
 import com.neoutils.neoregex.core.common.model.DrawMatch
 import com.neoutils.neoregex.core.common.model.Match
 import com.neoutils.neoregex.core.common.util.InteractionMode
@@ -172,7 +169,6 @@ actual fun TextEditor(
                 .padding(start = dimensions.nano.m)
                 .weight(weight = 1f, fill = false)
                 .fillMaxSize()
-                .onFocusChanged(onFocusChange)
                 .onPointerEvent(PointerEventType.Move) { event ->
                     hoverOffset = event.changes.first().position.let {
                         it.copy(y = it.y)
@@ -204,7 +200,7 @@ actual fun TextEditor(
                                     x = rect.left,
                                     y = rect.top
                                 ),
-                                size = Size(rect.width, rect.height)
+                                size = rect.size * 0.95f
                             )
                         }
                     }
@@ -226,10 +222,8 @@ actual fun TextEditor(
                                                 x = rect.left,
                                                 y = rect.top
                                             ),
-                                            size = Size(rect.width, rect.height),
-                                            style = Stroke(
-                                                width = 1f
-                                            )
+                                            size = rect.size * 0.95f,
+                                            style = Stroke(width = 1f)
                                         )
                                     }
 
@@ -276,10 +270,8 @@ actual fun TextEditor(
                                             x = rect.left,
                                             y = rect.top
                                         ),
-                                        size = Size(rect.width, rect.height),
-                                        style = Stroke(
-                                            width = 1f
-                                        )
+                                        size = rect.size * 0.95f,
+                                        style = Stroke(width = 1f)
                                     )
                                 }
                             }
