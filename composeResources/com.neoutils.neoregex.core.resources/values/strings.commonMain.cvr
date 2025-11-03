@@ -1,7 +1,7 @@
 version:0
 plurals|match_result_infos|ONE:JTEkcyBtYXRjaCAoJTIkcyk=,OTHER:JTEkcyBtYXRjaGVzICglMiRzKQ==
 string|about_description_text|VGhpcyBzb2Z0d2FyZSBpcyBmcmVlLCBsaWNlbnNlZCB1bmRlciB0aGUgR1BMdjMsIGFuZCB1c2VzIG9ubHkgb3BlbiBzb3VyY2UgbGlicmFyaWVzLg==
-string|about_libraries_btn|T3BlbiBzb3VyY2UgbGlicmFyaWVz
+string|about_libraries_btn|TGlicmFyaWVz
 string|about_license_btn|TGljZW5zZQ==
 string|about_runtime_text|UnVudGltZSB2ZXJzaW9uOiAlMSRz
 string|about_source_code_btn|U291cmNlIGNvZGU=
@@ -24,6 +24,7 @@ string|matcher_footer_insert_regex_hint|RW50ZXIgcmVndWxhciBleHByZXNzaW9u
 string|menu_about_btn|QWJvdXQ=
 string|menu_new_btn|TmV3
 string|menu_open_btn|T3Blbg==
+string|menu_pattern_btn|UGF0dGVybg==
 string|menu_save_btn|U2F2ZQ==
 string|salvage_edit_name_dialog_title|RWRpdCBuYW1l
 string|salvage_pattern_name_hint|UGF0dGVybiBuYW1l
@@ -35,12 +36,15 @@ string|saved_empty|Tm90aGluZyBzYXZlZCB5ZXQ=
 string|screen_about|QWJvdXQ=
 string|screen_libraries|TGlicmFyaWVz
 string|screen_matcher|TWF0Y2hlcg==
-string|screen_saved|U2F2ZWQ=
+string|screen_saved|UGF0dGVybnM=
 string|screen_validator|VmFsaWRhdG9y
 string|test_case_match_any|TWF0Y2ggQW55
 string|test_case_match_full|TWF0Y2ggRnVsbA==
 string|test_case_match_none|TWF0Y2ggTm9uZQ==
 string|test_case_untitled|VW50aXRsZWQ=
+string|theme_dark|RGFyaw==
+string|theme_light|TGlnaHQ=
+string|theme_system|U3lzdGVt
 string|validator_add_test_case_btn|QWRkIHRlc3QgY2FzZQ==
 string|validator_insert_input_hint|RW50ZXIgaW5wdXQ=
 string|web_warning_text|TmVvUmVnZXggd2ViIHZlcnNpb24gaXMgZXhwZXJpbWVudGFs
